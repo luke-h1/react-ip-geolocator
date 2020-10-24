@@ -1,16 +1,20 @@
 import React, { Fragment, useState } from "react";
 import "./Search.scss";
-
+import ResultCard from "../ResultCard/ResultCard";
 const Search = () => {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
+  const [result, setResult] = useState("");
   const onChange = (e) => setText(e.target.value);
 
   const onClick = async (text) => {
     try {
       const BASE_URL = `https://www.ipvigilante.com/`;
-      const res = await fetch(`${BASE_URL}${text}`);
+      const res = await fetch(`${BASE_URL}${text}/full`);
       const data = await res.json();
+      data.data.map((item) => {
+        return <ResultCard item={item} key={item.ipv4} />;
+      });
       console.log(data);
     } catch (error) {
       console.log(error);
@@ -20,7 +24,7 @@ const Search = () => {
   const fetchData = () => {
     if (text === "") {
       showError(<h2>Enter a value</h2>);
-    } else {
+    } else if (text.trim()) {
       onClick(text);
     }
   };
@@ -58,6 +62,7 @@ const Search = () => {
           onClick={fetchData}
         />
       </div>
+      <div className="result-container">{result}</div>
     </Fragment>
   );
 };
