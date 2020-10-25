@@ -9,13 +9,18 @@ const Search = () => {
 
   const onClick = async (text) => {
     try {
-      const BASE_URL = `https://www.ipvigilante.com/`;
-      const res = await fetch(`${BASE_URL}${text}/full`);
+      const BASE_URL = `https://api.ip2country.info`;
+      const res = await fetch(`${BASE_URL}/ip?${text}`);
       const data = await res.json();
-      data.data.map((item) => {
-        return <ResultCard item={item} key={item.ipv4} />;
-      });
-      console.log(data);
+      const result = (
+        <div className="result-container">
+          <p>
+            {data.countryEmoji}{' '}{data.countryName}
+          </p>
+          <p>{data.countryCode}</p>
+        </div>
+      );
+      setResult(result);
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +67,10 @@ const Search = () => {
           onClick={fetchData}
         />
       </div>
-      <div className="result-container">{result}</div>
+      <div className="result-container">
+        {result}
+        {/* {error} */}
+      </div>
     </Fragment>
   );
 };
