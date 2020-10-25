@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from "react";
 import "./Search.scss";
-import ResultCard from "../ResultCard/ResultCard";
 const Search = () => {
   const [text, setText] = useState("");
   const [error, setError] = useState("");
@@ -15,7 +14,7 @@ const Search = () => {
       const result = (
         <div className="result-container">
           <p>
-            {data.countryEmoji}{' '}{data.countryName}
+            {data.countryEmoji} {data.countryName}
           </p>
           <p>{data.countryCode}</p>
         </div>
@@ -23,14 +22,17 @@ const Search = () => {
       setResult(result);
     } catch (error) {
       console.log(error);
+      showError(<h2>Problem with API</h2>);
     }
   };
 
   const fetchData = () => {
     if (text === "") {
-      showError(<h2>Enter a value</h2>);
+      showError(<h2>Enter a correct value</h2>);
     } else if (text.trim()) {
       onClick(text);
+    } else {
+      showError(<h2>Problem with API</h2>);
     }
   };
 
@@ -69,7 +71,7 @@ const Search = () => {
       </div>
       <div className="result-container">
         {result}
-        {/* {error} */}
+        {error}
       </div>
     </Fragment>
   );
